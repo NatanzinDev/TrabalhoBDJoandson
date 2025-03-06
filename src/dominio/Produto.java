@@ -10,6 +10,15 @@ public class Produto {
 	private String nome;
 	private String preco;
 	private String validade;
+	private Venda venda;
+
+	public Venda getVenda() {
+		return venda;
+	}
+
+	public void setVenda(Venda venda) {
+		this.venda = venda;
+	}
 
 	public int getId() {
 		return id;
