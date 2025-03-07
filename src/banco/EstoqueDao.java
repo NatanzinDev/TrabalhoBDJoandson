@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import dominio.Estoque;
 
 
+
 public class EstoqueDao {
 	public void cadastrarEstoque(Estoque e) throws SQLException, ClassNotFoundException {
 Connection conexao = FabricaConexao.criarConexao();
@@ -81,6 +82,53 @@ Connection conexao = FabricaConexao.criarConexao();
 			e.setLugar(resultado.getString("lugar"));
 
 			ec.add(e);
+		}
+
+		return ec;
+	}
+
+	public List<Estoque> buscarEstoque(String text, String text2) throws ClassNotFoundException, SQLException {
+		Connection conexao = FabricaConexao.criarConexao();
+		String sql = " SELECT * FROM estoque WHERE 1 = 1 ";
+
+		if (text != null && !text.isEmpty()) {
+			sql += " AND nome LIKE ? ";
+		}
+		
+		if(text2 != null && !text2.isEmpty()) {
+			sql += "AND lugar LIKE ?";
+		}
+
+		
+
+		
+
+		PreparedStatement comando = conexao.prepareStatement(sql.toString());
+		int i = 1;
+
+		if (text != null && !text.isEmpty()) {
+			comando.setString(i, "%" + text.toUpperCase() + "%");
+			i++;
+		}
+
+		if (text2 != null && !text2.isEmpty()) {
+			comando.setString(i, "%" + text2.toUpperCase() + "%");
+			i++;
+		}
+
+		
+
+		ResultSet resultado = comando.executeQuery();
+
+		List<Estoque> ec = new ArrayList<>();
+
+		while (resultado.next()) {
+			Estoque e = new Estoque();
+			e.setNometipo(resultado.getString("nome"));
+			e.setLugar(resultado.getString("lugar"));
+			
+			ec.add(e);
+		
 		}
 
 		return ec;

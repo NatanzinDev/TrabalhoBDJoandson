@@ -44,13 +44,8 @@ public class Principal extends JFrame {
 		JButton btnNewButton = new JButton("Cadastrar Estoque");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CadastrarProduto ca = null;
-				try {
-					ca = new CadastrarProduto();
-				} catch (ClassNotFoundException | SQLException e1) {
-					e1.printStackTrace();
-
-				}
+				CadastrarEstoque ca = null;
+				ca = new CadastrarEstoque();
 				ca.setLocationRelativeTo(null);
 				ca.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				ca.setVisible(true);
@@ -67,6 +62,17 @@ public class Principal extends JFrame {
 		JButton btnCadastrarProduto = new JButton("Cadastrar Produto");
 		btnCadastrarProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				CadastrarProduto ca = null;
+				try {
+					ca = new CadastrarProduto();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ca.setLocationRelativeTo(null);
+				ca.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				ca.setVisible(true);
+				
 			}
 		});
 		btnCadastrarProduto.setBounds(160, 403, 126, 51);
@@ -75,6 +81,11 @@ public class Principal extends JFrame {
 		JButton btnNewButton_1_1 = new JButton("Buscar Estoque");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				BuscarEstoque ca = null;
+				ca = new BuscarEstoque();
+				ca.setLocationRelativeTo(null);
+				ca.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				ca.setVisible(true);
 			}
 		});
 		btnNewButton_1_1.setBounds(296, 403, 126, 51);
@@ -83,6 +94,11 @@ public class Principal extends JFrame {
 		JButton btnNewButton_1_1_1 = new JButton("Buscar Produto");
 		btnNewButton_1_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				BuscarProduto ca = null;
+				ca = new BuscarProduto();
+				ca.setLocationRelativeTo(null);
+				ca.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				ca.setVisible(true);
 			}
 		});
 		btnNewButton_1_1_1.setBounds(432, 403, 126, 51);

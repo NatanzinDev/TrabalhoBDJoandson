@@ -1,19 +1,29 @@
 package tela;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import banco.ProdutoDao;
+import dominio.Estoque;
+import dominio.Produto;
 
 public class BuscarProduto extends JFrame {
 
@@ -61,6 +71,16 @@ public class BuscarProduto extends JFrame {
 		panel.setLayout(null);
 		
 		JButton btnNewButton = new JButton("Buscar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					buscar();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNewButton.setBounds(57, 223, 85, 21);
 		panel.add(btnNewButton);
 		
@@ -111,6 +131,30 @@ public class BuscarProduto extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+	}
+
+	protected void buscar() throws ClassNotFoundException, SQLException {
+		if((textField.getText() == null || textField.getText().isEmpty()) && (textField_1.getText() == null || textField_1.getText().isEmpty())  && (textField_2.getText() == null || textField_2.getText().isEmpty())) {
+			JOptionPane.showMessageDialog(null, "Algum campo precisa está preenchido para buscar.");
+			return;
+		}
+		
+		ProdutoDao dao = new ProdutoDao();
+		List<Produto> pro = new ArrayList<>();
+		
+		pro = dao.buscarProduto(textField_1.getText(), textField.getText(),textField_2.getText());
+		
+		DefaultTableModel modelo = new DefaultTableModel(new String[] {  "Nome ", "Preço","Validade","Estoque" }, 0);
+		
+		for (int i = 0; i < pro.size(); i++) {
+			Produto p = pro.get(i);
+			
+
+			modelo.addRow(new String[] { p.getNome(), p.getPreco() ,p.getValidade(),p.getTipodeestoque().getNometipo()});
+		}
+
+		table.setModel(modelo);
+		
 	}
 
 }

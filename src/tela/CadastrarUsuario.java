@@ -127,8 +127,14 @@ public class CadastrarUsuario extends JFrame {
 		}
 		
 		UsuarioDao dao = new UsuarioDao();
-		dao.cadastrarUsuario(nome, senhaCriptografada, email);
-		
+		boolean a  = dao.cadastrarUsuario(nome, senhaCriptografada, email);
+		if(a) {
+			Principal ca = null;
+			ca = new Principal();
+			ca.setLocationRelativeTo(null);
+			ca.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			ca.setVisible(true);
+		}
 	}
 
 	private void exibirMensagemErro(String string) {

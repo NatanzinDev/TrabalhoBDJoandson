@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import dominio.Usuario;
+import tela.Login;
 
 public class UsuarioDao {
-	public void cadastrarUsuario(String nome, String senha, String email) throws ClassNotFoundException, SQLException {
+	public boolean cadastrarUsuario(String nome, String senha, String email) throws ClassNotFoundException, SQLException {
 		Usuario u = new Usuario();
 		
 		u.setNome(nome);
@@ -35,6 +36,7 @@ public class UsuarioDao {
 		conexao.close();
 
 		JOptionPane.showMessageDialog(null, "Usuário " + nome + " Cadastro com Sucesso");
+		return true;
 	}
 
 	public Usuario encontrarUsuarioPorEmailESenha(String email, String senhaCriptografada) throws ClassNotFoundException, SQLException {

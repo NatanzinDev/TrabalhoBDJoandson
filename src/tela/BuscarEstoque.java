@@ -1,18 +1,27 @@
 package tela;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import banco.EstoqueDao;
+import dominio.Estoque;
 
 public class BuscarEstoque extends JFrame {
 
@@ -69,14 +78,24 @@ public class BuscarEstoque extends JFrame {
 		panel.add(textField_1);
 		
 		JLabel lblNewLabel = new JLabel("Nome do estoque");
-		lblNewLabel.setBounds(61, 79, 96, 13);
+		lblNewLabel.setBounds(61, 79, 127, 13);
 		panel.add(lblNewLabel);
 		
 		JLabel lblLocalDoEstoque = new JLabel("Local do estoque");
-		lblLocalDoEstoque.setBounds(61, 153, 96, 13);
+		lblLocalDoEstoque.setBounds(61, 153, 127, 13);
 		panel.add(lblLocalDoEstoque);
 		
 		JButton btnNewButton = new JButton("Buscar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					buscar();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNewButton.setBounds(61, 234, 85, 21);
 		panel.add(btnNewButton);
 		
@@ -100,5 +119,29 @@ public class BuscarEstoque extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+	}
+
+	protected void buscar() throws ClassNotFoundException, SQLException {
+		if((textField.getText() == null || textField.getText().isEmpty()) && (textField_1.getText() == null || textField_1.getText().isEmpty())) {
+			JOptionPane.showMessageDialog(null, "Algum campo precisa está preenchido para buscar.");
+			return;
+		}
+		
+		EstoqueDao dao = new EstoqueDao();
+		List<Estoque> estoques = new ArrayList<>();
+		
+		estoques = dao.buscarEstoque(textField.getText(), textField_1.getText());
+		
+		DefaultTableModel modelo = new DefaultTableModel(new String[] {  "Nome ", "Local" }, 0);
+		
+		for (int i = 0; i < estoques.size(); i++) {
+			Estoque e = estoques.get(i);
+			
+
+			modelo.addRow(new String[] { e.getNometipo(), e.getLugar() ,});
+		}
+
+		table.setModel(modelo);
+		
 	}
 }
