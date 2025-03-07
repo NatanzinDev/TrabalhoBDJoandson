@@ -42,6 +42,7 @@ public class BuscarEstoque extends JFrame {
 	 * Create the frame.
 	 */
 	public BuscarEstoque() {
+		setTitle("Buscar Estoque");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 817, 463);
 		contentPane = new JPanel();
