@@ -41,7 +41,7 @@ public class Principal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton btnNewButton = new JButton("Entrar");
+		JButton btnNewButton = new JButton("Cadastrar Estoque");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CadastrarProduto ca = null;
@@ -56,12 +56,36 @@ public class Principal extends JFrame {
 				ca.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(203, 405, 126, 51);
+		btnNewButton.setBounds(24, 403, 126, 51);
 		contentPane.add(btnNewButton);
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(Principal.class.getResource("/tela/Imagem/LogoMercado1.png")));
 		lblNewLabel_1.setBounds(48, 30, 461, 346);
 		contentPane.add(lblNewLabel_1);
+		
+		JButton btnCadastrarProduto = new JButton("Cadastrar Produto");
+		btnCadastrarProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCadastrarProduto.setBounds(160, 403, 126, 51);
+		contentPane.add(btnCadastrarProduto);
+		
+		JButton btnNewButton_1_1 = new JButton("Buscar Estoque");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_1.setBounds(296, 403, 126, 51);
+		contentPane.add(btnNewButton_1_1);
+		
+		JButton btnNewButton_1_1_1 = new JButton("Buscar Produto");
+		btnNewButton_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_1_1.setBounds(432, 403, 126, 51);
+		contentPane.add(btnNewButton_1_1_1);
 	}
 }
