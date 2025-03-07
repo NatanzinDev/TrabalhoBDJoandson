@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,9 +25,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import banco.EstoqueDao;
 import banco.FabricaConexao;
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.SortedList;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import dominio.Estoque;
 import dominio.Produto;
-import javax.swing.JComboBox;
 
 public class CadastrarProduto extends JFrame {
 
@@ -37,6 +44,8 @@ public class CadastrarProduto extends JFrame {
 	private JList listarProdutos;
 	private JPanel panelListar;
 	private JPanel panelCadastrar;
+	private SortedList<Estoque> estoquesLista = new SortedList<Estoque>(new BasicEventList<Estoque>());
+	private JComboBox comboBox;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -110,11 +119,11 @@ public class CadastrarProduto extends JFrame {
 		textFieldValidade.setColumns(10);
 		textFieldValidade.setBounds(54, 186, 125, 29);
 		panelCadastrar.add(textFieldValidade);
-		
-		JComboBox comboBox = new JComboBox();
+
+		comboBox = new JComboBox();
 		comboBox.setBounds(43, 253, 150, 21);
 		panelCadastrar.add(comboBox);
-		
+
 		JLabel lblNewLabel_2_1 = new JLabel("Tipo de estoque");
 		lblNewLabel_2_1.setBounds(54, 229, 103, 14);
 		panelCadastrar.add(lblNewLabel_2_1);
@@ -174,8 +183,44 @@ public class CadastrarProduto extends JFrame {
 			}
 		});
 
+		AutoCompleteSupport.install(comboBox, estoquesLista);
+
+		comboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				try {
+					buscarEstoque();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 		atualizarListagemProdutos();
 
+	}
+
+	protected void buscarEstoque() throws ClassNotFoundException {
+		if (comboBox.getEditor().getItem() != null && comboBox.getEditor().getItem().toString().length() >= 3) {
+			EstoqueDao dao = new EstoqueDao();
+			List<Estoque> estoques = new ArrayList<>();
+
+			try {
+				String nome = comboBox.getEditor().getItem().toString();
+				estoques = dao.buscarEstoqueaPeloNome(nome);
+
+				estoquesLista.clear();
+				estoquesLista.addAll(estoques);
+
+				comboBox.showPopup();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Erro no Sistema");
+			}
+
+		}
 	}
 
 	protected void removerDados() throws ClassNotFoundException, SQLException {
@@ -239,11 +284,13 @@ public class CadastrarProduto extends JFrame {
 
 		while (resultado.next()) {
 			Produto a = new Produto();
-
+			Estoque e = new Estoque();
+			e.setId(resultado.getInt("idestoque"));
 			a.setId(resultado.getInt("id"));
 			a.setNome(resultado.getString("nome"));
 			a.setPreco(resultado.getString("preco"));
 			a.setValidade(resultado.getString("validade"));
+			a.setTipodeestoque(e);
 
 			produtosCadastrados.add(a);
 
@@ -283,24 +330,26 @@ public class CadastrarProduto extends JFrame {
 
 			Connection conexao = FabricaConexao.criarConexao();
 
-			String sql = "INSERT INTO PRODUTO (nome, preco, validade) VALUES (?, ?, ?)";
+			String sql = "INSERT INTO PRODUTO (nome, preco, validade, idestoque ) VALUES (?, ?, ?, ?)";
 
+			Estoque e =  (Estoque) comboBox.getSelectedItem();
+			
 			Produto a = new Produto();
 			a.setNome(textFieldNome.getText());
 			a.setPreco(textFieldPreco.getText());
 			a.setValidade(textFieldValidade.getText());
+			a.setTipodeestoque(e);
+			
 
 			PreparedStatement comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 			comando.setString(1, a.getNome());
 			comando.setString(2, a.getPreco());
 			comando.setString(3, a.getValidade());
-			comando.executeUpdate();
+			comando.setInt(4, a.getTipodeestoque().getId());
+			comando.execute();
 
-			ResultSet rs = comando.getGeneratedKeys();
-			if (rs.next()) {
-				a.setId(rs.getInt(1));
-			}
+			
 
 			comando.close();
 			conexao.close();

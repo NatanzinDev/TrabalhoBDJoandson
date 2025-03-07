@@ -1,9 +1,14 @@
 package dominio;
 
 public class Estoque {
+	@Override
+	public String toString() {
+		return "Estoque " + nometipo ;
+	}
 	private int id;
 	private String nometipo;
 	private String lugar;
+	
 	public int getId() {
 		return id;
 	}
