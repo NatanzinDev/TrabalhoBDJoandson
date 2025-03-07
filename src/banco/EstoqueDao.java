@@ -2,21 +2,24 @@ package banco;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import dominio.Estoque;
+
 public class EstoqueDao {
-	public void cadastrarEstoque() {
+	public void cadastrarEstoque(Estoque e) throws SQLException, ClassNotFoundException {
 Connection conexao = FabricaConexao.criarConexao();
 		
-		String sql = "INSERT INTO venda (nomecliente,datavenda,idcomb) VALUES (?,?,?)";
+		String sql = "INSERT INTO estoque (nome,lugar) VALUES (?,?)";
 					
 		
 		PreparedStatement comando = conexao.prepareStatement(sql);
 		
-		comando.setString(1, v.getNomecliente());
-		comando.setString(2, v.getData());
-		comando.setInt(3, c.getId());
+		comando.setString(1, e.getNometipo());
+		comando.setString(2, e.getLugar());
+		
 	
 		comando.execute();
 		
@@ -24,6 +27,23 @@ Connection conexao = FabricaConexao.criarConexao();
 		comando.close();
 		conexao.close();
 		
-		JOptionPane.showMessageDialog(null,"Venda cadastrada com sucesso","Info",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null,"Estoque cadastrado!","Info",JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void adicionarEstoque(Estoque e) throws ClassNotFoundException, SQLException {
+		Connection conexao = FabricaConexao.criarConexao();
+		
+		String sql = " INSERT INTO  estoque (nome,lugar) VALUES (?,?) ";
+
+		PreparedStatement comando = conexao.prepareStatement(sql);
+		comando.setString(1, e.getNometipo());
+		comando.setString(2, e.getLugar());
+		comando.execute();
+
+		comando.close();
+		conexao.close();
+
+		JOptionPane.showMessageDialog(null, "Estoque Cadastrado!");
+		
 	}
 }

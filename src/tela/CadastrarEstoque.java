@@ -1,15 +1,21 @@
 package tela;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import javax.swing.JLabel;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import banco.EstoqueDao;
+import dominio.Estoque;
 
 public class CadastrarEstoque extends JFrame {
 
@@ -61,19 +67,39 @@ public class CadastrarEstoque extends JFrame {
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(138, 145, 257, 19);
+		textField_1.setBounds(138, 139, 257, 19);
 		panel.add(textField_1);
 		
 		JLabel lblNewLabel = new JLabel("Nome do estoque");
-		lblNewLabel.setBounds(141, 81, 107, 13);
+		lblNewLabel.setBounds(141, 75, 107, 19);
 		panel.add(lblNewLabel);
 		
 		JLabel lblLocalDoEstoque = new JLabel("Local do estoque");
-		lblLocalDoEstoque.setBounds(138, 134, 107, 13);
+		lblLocalDoEstoque.setBounds(138, 122, 107, 13);
 		panel.add(lblLocalDoEstoque);
 		
 		JButton btnNewButton = new JButton("Cadastrar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					cadastrar();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNewButton.setBounds(140, 204, 140, 21);
 		panel.add(btnNewButton);
+	}
+
+	protected void cadastrar() throws ClassNotFoundException, SQLException {
+		Estoque e = new Estoque();
+		EstoqueDao dao = new EstoqueDao();
+		e.setNometipo(textField.getText());
+		e.setLugar(textField_1.getText());
+		
+		dao.adicionarEstoque(e);
+		
 	}
 }
