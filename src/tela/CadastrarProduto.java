@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder;
 
 import banco.FabricaConexao;
 import dominio.Produto;
+import javax.swing.JComboBox;
 
 public class CadastrarProduto extends JFrame {
 
@@ -97,7 +98,7 @@ public class CadastrarProduto extends JFrame {
 				}
 			}
 		});
-		btnNewButtonCadastrarProduto.setBounds(39, 274, 150, 46);
+		btnNewButtonCadastrarProduto.setBounds(43, 322, 150, 46);
 		panelCadastrar.add(btnNewButtonCadastrarProduto);
 
 		textFieldPreco = new JTextField();
@@ -109,6 +110,14 @@ public class CadastrarProduto extends JFrame {
 		textFieldValidade.setColumns(10);
 		textFieldValidade.setBounds(54, 186, 125, 29);
 		panelCadastrar.add(textFieldValidade);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(43, 253, 150, 21);
+		panelCadastrar.add(comboBox);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("Tipo de estoque");
+		lblNewLabel_2_1.setBounds(54, 229, 103, 14);
+		panelCadastrar.add(lblNewLabel_2_1);
 
 		panelListar = new JPanel();
 		panelListar.setBackground(new Color(192, 192, 192));

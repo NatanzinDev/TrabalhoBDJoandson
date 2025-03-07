@@ -10,14 +10,16 @@ public class Produto {
 	private String nome;
 	private String preco;
 	private String validade;
-	private Venda venda;
+	private Estoque tipodeestoque;
 
-	public Venda getVenda() {
-		return venda;
+
+
+	public Estoque getTipodeestoque() {
+		return tipodeestoque;
 	}
 
-	public void setVenda(Venda venda) {
-		this.venda = venda;
+	public void setTipodeestoque(Estoque tipodeestoque) {
+		this.tipodeestoque = tipodeestoque;
 	}
 
 	public int getId() {
